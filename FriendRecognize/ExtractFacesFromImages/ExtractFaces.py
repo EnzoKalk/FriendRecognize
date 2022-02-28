@@ -2,8 +2,9 @@ import os
 
 import cv2 as cv
 import dlib
-from FaceAligner import FaceAligner
 from tqdm import tqdm
+
+from FriendRecognize.utils.FaceAligner import FaceAligner
 
 
 def load_images_from_folder(folder):

@@ -1,6 +1,7 @@
+from collections import OrderedDict
+
 import cv2
 import numpy as np
-from collections import OrderedDict
 
 # For dlib’s 68-point facial landmark detector:
 FACIAL_LANDMARKS_68_IDXS = OrderedDict([
@@ -13,6 +14,7 @@ FACIAL_LANDMARKS_68_IDXS = OrderedDict([
     ("nose", (27, 36)),
     ("jaw", (0, 17))
 ])
+
 
 def shape_to_np(shape, dtype="int"):
     # initialize the list of (x, y)-coordinates
@@ -28,8 +30,7 @@ def shape_to_np(shape, dtype="int"):
 
 
 class FaceAligner:
-    def __init__(self, predictor, desiredLeftEye=(0.35, 0.35),
-                 desiredFaceWidth=256, desiredFaceHeight=None):
+    def __init__(self, predictor, desiredLeftEye=(0.35, 0.35), desiredFaceWidth=256, desiredFaceHeight=None):
         # store the facial landmark predictor, desired output left
         # eye position, and desired output face width + height
         self.predictor = predictor
@@ -79,7 +80,7 @@ class FaceAligner:
         # compute center (x, y)-coordinates (i.e., the median point)
         # between the two eyes in the input image
         eyesCenter = (int((leftEyeCenter[0] + rightEyeCenter[0]) // 2),
-                    int((leftEyeCenter[1] + rightEyeCenter[1]) // 2))
+                      int((leftEyeCenter[1] + rightEyeCenter[1]) // 2))
 
         # grab the rotation matrix for rotating and scaling the face
         M = cv2.getRotationMatrix2D(center=eyesCenter, angle=angle, scale=scale)
@@ -92,8 +93,7 @@ class FaceAligner:
 
         # apply the affine transformation
         (w, h) = (self.desiredFaceWidth, self.desiredFaceHeight)
-        output = cv2.warpAffine(image, M, (w, h),
-                                flags=cv2.INTER_CUBIC)
+        output = cv2.warpAffine(image, M, (w, h), flags=cv2.INTER_CUBIC)
 
         # return the aligned face
         return output

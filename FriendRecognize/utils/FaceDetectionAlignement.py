@@ -4,6 +4,7 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import cv2
 
+
 def pad_bb(rect, shape, padding=20):
     # Add padding to the bbox taking into account the image shape
     rect[0] = max(0, rect[0] - padding)

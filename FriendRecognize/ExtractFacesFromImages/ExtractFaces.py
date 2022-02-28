@@ -2,9 +2,8 @@ import os
 
 import cv2 as cv
 import dlib
-from tqdm import tqdm
-
 from FaceAligner import FaceAligner
+from tqdm import tqdm
 
 
 def load_images_from_folder(folder):

@@ -1,0 +1,39 @@
+configurations:
+
+libs:
+  predictor: 'libs/shape_predictor_68_face_landmarks.dat'
+  detector: 'libs/opencv_face_detector.pbtxt'
+  detector-uint8: 'libs/opencv_face_detector_uint8.pb'
+
+models:
+  vincenzo: 'models/vincenzo/'
+  angelo: 'models/angelo/'
+  dima: 'models/dima/'
+  giovanna: 'models/giovanna/'
+  noemi: 'models/noemi/'
+
+output:
+  results: 'output/'
+
+dataset:
+  folder: 'data/'
+  training: 'data/trainingSet/'
+  test: 'data/testSet/'
+
+features:
+  with:
+    vincenzo: 'vincenzo'
+    angelo: 'angelo'
+    dima: 'dima'
+    giovanna: 'giovanna'
+    noemi: 'models/noemi'
+  without:
+    vincenzo: 'noVincenzo'
+    angelo: 'noAngelo'
+    dima: 'noDima'
+    giovanna: 'noGiovanna'
+    noemi: 'noNoemi'
+
+labels:
+  test: 'testLabels.csv'
+  results: 'results.csv'

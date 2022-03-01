@@ -1,5 +1,9 @@
 import os
 
+import dlib
+
+from FriendRecognize.utils.FaceAligner import FaceAligner
+
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import cv2
@@ -33,3 +37,27 @@ def getFaceBox(net, frame, conf_threshold=0.7):
             y2 = int(detections[0, 0, i, 6] * frameHeight)
             bboxes.append([x1, y1, x2, y2])
     return frameOpencv2Dnn, bboxes
+
+
+def alignement(img, faceNet, predictor):
+    fa = FaceAligner(predictor, desiredFaceWidth=224, desiredFaceHeight=224)
+    # Find box of the image
+    frameFace, bboxes = getFaceBox(faceNet, img)
+    padding = 0
+    showface = frameFace.copy()
+    faceim = None
+    if frameFace is not None:
+        for bbox in bboxes:
+            bbox = pad_bb(bbox, frameFace.shape, padding)
+            dlibRect = dlib.rectangle(int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))
+            grayframe = cv2.cvtColor(frameFace, cv2.COLOR_BGR2GRAY)
+            faceim = fa.align(frameFace, grayframe, dlibRect)
+            try:
+                cv2.resize(frameFace[bbox[1]:bbox[3], bbox[0]:bbox[2]], (224, 224), cv2.INTER_LANCZOS4)
+            except Exception as e:
+                return None
+            x1, y1, x2, y2 = bbox
+            c = (0, 255, 0)
+            cv2.rectangle(showface, (x1, y1), (x2, y2), c, 3, 8)
+        return faceim
+    return None

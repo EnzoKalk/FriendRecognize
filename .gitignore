@@ -2,6 +2,7 @@
 *.pb
 *.pbtxt
 *.jpg
+*.jpeg
 *.png
 *.iml
 *.xml

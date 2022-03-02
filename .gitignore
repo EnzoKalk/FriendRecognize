@@ -7,4 +7,5 @@
 *.iml
 *.xml
 *.pyc
+*.pkl
 .idea

@@ -6,33 +6,33 @@ libs:
   detector-uint8: 'libs/opencv_face_detector_uint8.pb'
 
 models:
-  vincenzo: 'models/vincenzo/'
-  angelo: 'models/angelo/'
-  dima: 'models/dima/'
-  giovanna: 'models/giovanna/'
-  noemi: 'models/noemi/'
+  Vincenzo: 'models/Vincenzo/'
+  Angelo: 'models/Angelo/'
+  Dima: 'models/Dima/'
+  Giovanna: 'models/Giovanna/'
+  Noemi: 'models/Noemi/'
 
 output:
   results: 'output/'
 
-dataset:
+data:
   folder: 'data/'
   training: 'data/trainingSet/'
   test: 'data/testSet/'
 
 features:
   with:
-    vincenzo: 'vincenzo'
-    angelo: 'angelo'
-    dima: 'dima'
-    giovanna: 'giovanna'
-    noemi: 'models/noemi'
+    Vincenzo: 'Vincenzo'
+    Angelo: 'Angelo'
+    Dima: 'Dima'
+    Giovanna: 'Giovanna'
+    Noemi: 'Noemi'
   without:
-    vincenzo: 'noVincenzo'
-    angelo: 'noAngelo'
-    dima: 'noDima'
-    giovanna: 'noGiovanna'
-    noemi: 'noNoemi'
+    Vincenzo: 'noVincenzo'
+    Angelo: 'noAngelo'
+    Dima: 'noDima'
+    Giovanna: 'noGiovanna'
+    Noemi: 'noNoemi'
 
 labels:
   test: 'testLabels.csv'

@@ -6,8 +6,10 @@ import dlib
 import yaml
 from tqdm import tqdm
 
+
 def get_predictor_path(config):
-    return "../"+config['libs']['predictor']
+    return "../" + config['libs']['predictor']
+
 
 def augmentation(path, remaining):
     for image in tqdm(load_images_from_folder(path), "Augmentation Flip to: " + path):
@@ -16,6 +18,7 @@ def augmentation(path, remaining):
         img = cv.flip(image[1], 1)
         cv.imwrite(path + "/" + image[0] + "_" + str(remaining) + ".jpg", img)
         remaining -= 1
+
 
 def load_images_from_folder(folder):
     images = []
@@ -27,11 +30,11 @@ def load_images_from_folder(folder):
 
 if __name__ == "__main__":
     # Paths
-    path_vincenzo = '../data/training/Vincenzo'
-    path_angelo = '../data/training/Angelo'
-    path_dima = '../data/training/Dima'
-    path_giovanna = '../data/training/Giovanna'
-    path_noemi = '../data/training/Noemi'
+    path_vincenzo = '../data/trainingSet/Vincenzo'
+    path_angelo = '../data/trainingSet/Angelo'
+    path_dima = '../data/trainingSet/Dima'
+    path_giovanna = '../data/trainingSet/Giovanna'
+    path_noemi = '../data/trainingSet/Noemi'
 
     # Init params
     with open('../config.yml') as file:

@@ -18,7 +18,6 @@ def load_images_from_folder(folder, cv=None):
 def get_lendmarks_from(image, detector, predictor):
     grayframe = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     faces = detector(grayframe, 1)
-
     showface = image.copy()
     for rect in faces:
         shape = predictor(grayframe, rect)

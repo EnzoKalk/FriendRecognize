@@ -5,9 +5,9 @@ import dlib
 import yaml
 from tqdm import tqdm
 
-from utils.classifier.feature_classifier import print_metrics, FeatureClassifier
+from utils.UsefulMethods import extract_features_for_training, Labeler, ImageType, Feature
+from utils.classifier.FeatureClassifier import print_metrics, FeatureClassifier
 from utils.object.TrainImage import TrainImage
-from utils.utils import extract_features_for_training, Labeler, ImageType, Feature
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"

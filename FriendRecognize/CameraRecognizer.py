@@ -77,20 +77,20 @@ if __name__ == '__main__':
                                           classifier_probability_giovanna,
                                           classifier_probability_noemi)
                 else:
-                    classifier_probability_vincenzo = [[0, 0]]
-                    classifier_probability_angelo = [[0, 0]]
-                    classifier_probability_dima = [[0, 0]]
-                    classifier_probability_giovanna = [[0, 0]]
-                    classifier_probability_noemi = [[0, 0]]
+                    classifier_probability_vincenzo = 0
+                    classifier_probability_angelo = 0
+                    classifier_probability_dima = 0
+                    classifier_probability_giovanna = 0
+                    classifier_probability_noemi = 0
                     max_probability = 0
             else:
-                classifier_probability_vincenzo = [[0, 0]]
-                classifier_probability_angelo = [[0, 0]]
-                classifier_probability_dima = [[0, 0]]
-                classifier_probability_giovanna = [[0, 0]]
-                classifier_probability_noemi = [[0, 0]]
+                classifier_probability_vincenzo = 0
+                classifier_probability_angelo = 0
+                classifier_probability_dima = 0
+                classifier_probability_giovanna = 0
+                classifier_probability_noemi = 0
                 max_probability = 0
-            if 0.5 >= max_probability:
+            if max_probability < 0.5:
                 cv.rectangle(frames, (x, y), (x + w, y + h), (169, 169, 169), 2)
                 cv.rectangle(frames, (x, y), (x + w, y - 30), (255, 255, 255), -1)
                 cv.putText(frames,

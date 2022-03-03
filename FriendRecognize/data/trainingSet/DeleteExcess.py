@@ -41,12 +41,13 @@ if __name__ == "__main__":
     number_giovanna_elements = len([name for name in tqdm(os.listdir(path_giovanna), desc="Count Giovanna elements")])
     number_noemi_elements = len([name for name in tqdm(os.listdir(path_noemi), desc="Count Noemi elements")])
     number_noVincenzo_elements = len(
-        [name for name in tqdm(os.listdir(path_noVincenzo), desc="Count Vincenzo elements")])
-    number_noAngelo_elements = len([name for name in tqdm(os.listdir(path_noAngelo), desc="Count Angelo elements")])
-    number_noDima_elements = len([name for name in tqdm(os.listdir(path_noDima), desc="Count Dima elements")])
+        [name for name in tqdm(os.listdir(path_noVincenzo), desc="Count noVincenzo elements")])
+    number_noAngelo_elements = len([name for name in tqdm(os.listdir(path_noAngelo), desc="Count noAngelo elements")])
+    number_noDima_elements = len([name for name in tqdm(os.listdir(path_noDima), desc="Count noDima elements")])
     number_noGiovanna_elements = len(
-        [name for name in tqdm(os.listdir(path_noGiovanna), desc="Count Giovanna elements")])
-    number_noNoemi_elements = len([name for name in tqdm(os.listdir(path_noNoemi), desc="Count Noemi elements")])
+        [name for name in tqdm(os.listdir(path_noGiovanna), desc="Count noGiovanna elements")])
+    number_noNoemi_elements = len([name for name in tqdm(os.listdir(path_noNoemi), desc="Count noNoemi elements")])
+    print("Deleting...")
     if number_vincenzo_elements > number_noVincenzo_elements:
         removing(path_vincenzo,
                  max(number_vincenzo_elements, number_noVincenzo_elements) - min(number_vincenzo_elements,
@@ -81,5 +82,5 @@ if __name__ == "__main__":
     else:
         removing(path_noNoemi, max(number_noemi_elements, number_noNoemi_elements) - min(number_noemi_elements,
                                                                                          number_noNoemi_elements))
-    # Exit
+    print("Finish!")
     sys.exit(0)

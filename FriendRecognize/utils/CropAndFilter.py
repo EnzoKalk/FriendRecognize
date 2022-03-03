@@ -76,7 +76,7 @@ def improve_edge_from(image):
 def clean_upper_face_from(image):
     image = remove_color_from(image)
     image = cv.equalizeHist(image)
-    #image = boosted_high_pass_filter_from(image)
+    # image = boosted_high_pass_filter_from(image)
     # angle_edge_to_detect = [90]
     # image = isolate_specific_edges_from(image, angle_edge_to_detect)
     # image = threshold_from(image)

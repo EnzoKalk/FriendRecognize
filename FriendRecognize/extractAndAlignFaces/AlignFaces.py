@@ -3,8 +3,10 @@ import os
 
 import cv2 as cv
 import dlib
+import numpy as np
 from tqdm import tqdm
 
+from FriendRecognize.utils.CropAndFilter import crop_by_landmarks
 from FriendRecognize.utils.FaceLandmarks import get_lendmarks_from
 
 
@@ -18,16 +20,12 @@ def load_images_from_folder(folder):
 
 
 if __name__ == '__main__':
-
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor('../libs/shape_predictor_68_face_landmarks.dat')
-
     source_images = "./datasetDetectedFaces/extracted_faces"
-
     destination_images = "./datasetDetectedFaces/aligned_faces"
     if not os.path.exists(destination_images):
         os.makedirs(destination_images)
-
     for img in tqdm(load_images_from_folder(source_images), "Find lendmarks on faces"):
         image = img[0]
         image_name = img[1]
@@ -62,6 +60,13 @@ if __name__ == '__main__':
             center = (width / 2, height / 2)
             rotate_matrix = cv.getRotationMatrix2D(center=center, angle=math.degrees(angular_coefficient), scale=1)
             image = cv.warpAffine(src=image, M=rotate_matrix, dsize=(width, height))
+            rect = detector(image)[0]
+            sp = predictor(image, rect)
+            landmarks = np.array([[p.x, p.y] for p in sp.parts()])
+            range_face = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+            landmark_y_min = 19
+            landmark_y_max = 8
+            image = crop_by_landmarks(image, landmarks, range_face, landmark_y_min, landmark_y_max)
             cv.imwrite(os.path.join(destination_images, image_name), image)
         except:
             pass

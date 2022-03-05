@@ -65,6 +65,7 @@ if __name__ == '__main__':
     predictor = dlib.shape_predictor(get_predictor_path(config))
     source_path = get_source_path(config)
     destination_path = get_destination_path(config)
+
     # Check directories
     if not os.path.exists(source_path):
         print("There are no images for detecting faces")
@@ -73,6 +74,7 @@ if __name__ == '__main__':
         os.makedirs(destination_path)
     if not os.path.exists(destination_path + "/temp"):
         os.makedirs(destination_path + "/temp")
+
     # Detect faces
     for image in tqdm(load_images_from(source_path), "Detect faces"):
         extract_face_from(image, destination_path, face_cascade)
@@ -85,6 +87,8 @@ if __name__ == '__main__':
             cv.imwrite(os.path.join(destination_path, image_name), face)
         except:
             pass
+
     # Delete temp folder
     shutil.rmtree(destination_path + "/temp")
+
     exit(0)

@@ -18,7 +18,7 @@ data:
   destination_extracted_faces: 'data/detectedFaces/extracted_and_aligned_faces'
   training: 'data/trainingSet/'
 
-features:
+friends:
   with:
     Vincenzo: 'Vincenzo'
     Angelo: 'Angelo'

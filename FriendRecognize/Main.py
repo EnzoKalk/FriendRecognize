@@ -6,20 +6,16 @@ from FriendRecognize.utils.augmentationAndBalancing.Balancing import balance
 from FriendRecognize.utils.trainModelAndClassifier.TrainModel import train
 
 
-def get_features(config):
-    return config['features']['with']
+def get_friends(config):
+    return config['friends']['with']
 
 
 def get_with_feature(config, feature):
-    return config['data']['training'] + config['features']['with'][feature]
+    return config['data']['training'] + config['friends']['with'][feature]
 
 
 def get_without_feature(config, feature):
-    return config['data']['training'] + config['features']['without'][feature]
-
-
-def get_model(config, feature):
-    return config['models'][feature]
+    return config['data']['training'] + config['friends']['without'][feature]
 
 
 def get_predictor_path(config):
@@ -30,7 +26,7 @@ if __name__ == '__main__':
     # Init parameters
     with open('config.yml') as file:
         config = yaml.full_load(file)
-    features = get_features(config)
+    friends = get_friends(config)
     perform_augmentation = False
     perform_balancing = False
     perform_training = False
@@ -67,21 +63,23 @@ if __name__ == '__main__':
     if perform_augmentation:
         print("\nAugmentation...")
         paths = []
-        for feature in features:
-            paths.append(get_with_feature(config, feature))
-            paths.append(get_without_feature(config, feature))
+        for friend in friends:
+            paths.append(get_with_feature(config, friend))
+            paths.append(get_without_feature(config, friend))
         augment(paths)
 
     if perform_balancing:
         print("\nBalancing...")
         paths = []
-        for feature in features:
-            paths.append(get_with_feature(config, feature))
-            paths.append(get_without_feature(config, feature))
+        for friend in friends:
+            paths.append(get_with_feature(config, friend))
+            paths.append(get_without_feature(config, friend))
         balance(paths)
 
     if perform_training:
         print("\nTraining...")
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor(get_predictor_path(config))
-        train(config, features, detector, predictor)
+        train(config, friends, detector, predictor)
+
+    exit(0)

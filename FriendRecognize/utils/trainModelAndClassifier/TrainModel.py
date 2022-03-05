@@ -3,58 +3,64 @@ import random
 
 from tqdm import tqdm
 
-from FriendRecognize.utils.UsefulMethods import ImageType, Labeler, extract_features_for_training, Feature
+from FriendRecognize.utils.UsefulMethods import ImageType, Labeler, extract_features_for_training, Friend
 from FriendRecognize.utils.object.TrainImage import TrainImage
 from FriendRecognize.utils.trainModelAndClassifier.Classifier import Classifier, print_metrics
-
-
-def get_image_with_feature(config, feature):
-    path = config['data']['training'] + config['features']['with'][feature]
-    img_type = ImageType.FEATURE.value
-    return {'path': path, 'type': img_type}
-
-
-def get_image_without_feature(config, feature):
-    path = config['data']['training'] + config['features']['without'][feature]
-    img_type = ImageType.NO_FEATURE.value
-    return {'path': path, 'type': img_type}
 
 
 def get_model(config, feature):
     return config['models'][feature]
 
 
+def get_image_with_friend(config, feature):
+    path = config['data']['training'] + config['friends']['with'][feature]
+    img_type = ImageType.FEATURE.value
+    return {'path': path, 'type': img_type}
+
+
+def get_image_without_friend(config, feature):
+    path = config['data']['training'] + config['friends']['without'][feature]
+    img_type = ImageType.NO_FEATURE.value
+    return {'path': path, 'type': img_type}
+
+
 def generate_empty_dataset():
     return {'train': {0: [], 1: []}, 'val': {0: [], 1: []}}
 
 
-def generation_datasets(images_with_feature, images_without_feature, train_val_ratio, kind_of_feature):
-    src = [images_without_feature, images_with_feature]
+def generation_datasets(images_with_friend, images_without_friend, train_ratio, friend):
+    # Init parameters
+    sources = [images_without_friend, images_with_friend]
     desc_train = ["Fill trainingSet set of No ", "Fill trainingSet set of "]
     desc_val = ["Fill validation set of No ", "Fill validation set of "]
     dataset = generate_empty_dataset()
-    # Fill trainingSet and validation set
-    for source in src:
-        folder_path = source['path']
+
+    # Distribute samples between sets
+    for src in sources:
+        # Init parameters
+        folder_path = src['path']
         files = os.listdir(folder_path)
-        has_feature = source['type']
-        number_of_files = int(len(files) * train_val_ratio)
+        has_feature = src['type']
+        number_of_files = int(len(files) * train_ratio)
+
+        # Fill trainingSet
         for file_name in tqdm(random.sample(files, number_of_files),
-                              desc=desc_train[has_feature] + str(kind_of_feature)):
+                              desc=desc_train[has_feature] + str(friend)):
             dataset['train'][has_feature].append(TrainImage(file_name, folder_path))
-        for file_name in tqdm(files, desc=desc_val[has_feature] + str(kind_of_feature)):
+
+        # Fill validationSet
+        for file_name in tqdm(files, desc=desc_val[has_feature] + str(friend)):
             if not any(train_image.is_equal(file_name) for train_image in dataset['train'][has_feature]):
                 dataset['val'][has_feature].append(TrainImage(file_name, folder_path))
     return dataset
 
 
-def generation_features(images_with_feature, images_without_feature, train_val_ratio, predictor, detector,
-                        kind_of_feature):
+def generation_features(images_with_friend, images_without_friend, train_ratio, predictor, detector, friend):
     print("\nDataset...")
-    dataset_images = generation_datasets(images_with_feature,
-                                         images_without_feature,
-                                         train_val_ratio,
-                                         kind_of_feature)
+    dataset_images = generation_datasets(images_with_friend,
+                                         images_without_friend,
+                                         train_ratio,
+                                         friend)
     print("\nLabeler...")
     labeler = Labeler(dataset_images)
     print("\nFeature...")
@@ -62,7 +68,7 @@ def generation_features(images_with_feature, images_without_feature, train_val_r
                                          labeler,
                                          detector,
                                          predictor,
-                                         kind_of_feature)
+                                         friend)
 
 
 def training(X_train, y_train, X_val, y_val, fitted_model_path, metrics=True):
@@ -75,22 +81,25 @@ def training(X_train, y_train, X_val, y_val, fitted_model_path, metrics=True):
     return y_pred
 
 
-def train(config, features, detector, predictor, train_ratio=0.7):
-    for feature in features:
-        images_with_feature = get_image_with_feature(config, feature)
-        images_without_feature = get_image_without_feature(config, feature)
-        fitted_model = get_model(config, feature)
-        kind_of_feature = Feature(feature)
+def train(config, friends, detector, predictor, train_ratio=0.7):
+    for friend in friends:
+        # Init parameters
+        images_with_friend = get_image_with_friend(config, friend)
+        images_without_friend = get_image_without_friend(config, friend)
+        fitted_model = get_model(config, friend)
+        friend = Friend(friend)
         if not os.path.exists(fitted_model):
             os.makedirs(fitted_model)
-        # Generation feature
-        X_train, y_train, X_val, y_val = generation_features(images_with_feature,
-                                                             images_without_feature,
+
+        # Generate feature
+        X_train, y_train, X_val, y_val = generation_features(images_with_friend,
+                                                             images_without_friend,
                                                              train_ratio,
                                                              predictor,
                                                              detector,
-                                                             kind_of_feature)
-        # Fitting and prediction
+                                                             friend)
+
+        # Train model
         training(X_train,
                  y_train,
                  X_val,

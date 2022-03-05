@@ -11,7 +11,7 @@ from FriendRecognize.utils.Filtering import preprocessing
 from FriendRecognize.utils.lbp.LBPFeature import LBP
 
 
-class Feature(Enum):
+class Friend(Enum):
     VINCENZO = "Vincenzo"
     ANGELO = "Angelo"
     DIMA = "Dima"
@@ -22,6 +22,30 @@ class Feature(Enum):
 class ImageType(Enum):
     FEATURE = 1
     NO_FEATURE = 0
+
+
+class Labeler:
+    def __init__(self, dataset=None):
+        self.encoding = None
+        if dataset:
+            self.encoding = {}
+            for id in dataset['train']:
+                if id not in self.encoding:
+                    self.encoding[id] = len(self.encoding)
+
+    def encode(self, y):
+        if self.encoding:
+            return self.encoding[y]
+        else:
+            raise Exception("Encoder not initialized. Pass a data to the constructor or load a model!")
+
+    def save(self, path_dataset, output_path='/labels.pkl'):
+        with open(path_dataset + output_path, 'wb') as file:
+            pk.dump(self.encoding, file)
+
+    def load(self, path_dataset, input_path='/labels.pkl'):
+        with open(path_dataset + input_path, 'rb') as file:
+            self.encoding = pk.load(file)
 
 
 def load_images_from(path_source, get_images=True, get_image_name=True, show_tqdm=True):
@@ -54,7 +78,6 @@ def load_images_from(path_source, get_images=True, get_image_name=True, show_tqd
         return images
 
 
-# LBP
 def extraction_feature_LBP(X, kind_of_feature):
     lbp = LBP(numPoints=16, radius=4, num_bins=100, n_row=10, n_col=10)
     x_new = []
@@ -63,31 +86,6 @@ def extraction_feature_LBP(X, kind_of_feature):
         x_new.append(hist)
     x_new = np.array(x_new)
     return x_new
-
-
-# --> FUNCTIONS FOR TRAINING <--
-class Labeler:
-    def __init__(self, dataset=None):
-        self.encoding = None
-        if dataset:
-            self.encoding = {}
-            for id in dataset['train']:
-                if id not in self.encoding:
-                    self.encoding[id] = len(self.encoding)
-
-    def encode(self, y):
-        if self.encoding:
-            return self.encoding[y]
-        else:
-            raise Exception("Encoder not initialized. Pass a data to the constructor or load a model!")
-
-    def save(self, path_dataset, output_path='/labels.pkl'):
-        with open(path_dataset + output_path, 'wb') as file:
-            pk.dump(self.encoding, file)
-
-    def load(self, path_dataset, input_path='/labels.pkl'):
-        with open(path_dataset + input_path, 'rb') as file:
-            self.encoding = pk.load(file)
 
 
 def compute_raw_feature_for_training(X_train, y_train, X_val, y_val, kind_of_feature):

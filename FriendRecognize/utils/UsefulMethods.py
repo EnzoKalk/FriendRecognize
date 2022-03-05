@@ -1,14 +1,13 @@
 import copy
+import os
 import pickle as pk
 from enum import Enum
 
 import cv2 as cv
 import numpy as np
-from sklearn.decomposition import PCA
 from tqdm import tqdm
 
-from FriendRecognize.utils.CropAndFilter import preprocessing
-from FriendRecognize.utils.hog.HOGFeature import HOG
+from FriendRecognize.utils.Filtering import preprocessing
 from FriendRecognize.utils.lbp.LBPFeature import LBP
 
 
@@ -25,15 +24,34 @@ class ImageType(Enum):
     NO_FEATURE = 0
 
 
-# HOG
-def extraction_feature_HOG(X, kind_of_feature):
-    hog = HOG(orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2))
-    x_new = []
-    for i in tqdm(range(X.shape[0]), desc="Extract feature for " + str(kind_of_feature)):
-        hist, _ = hog.describe(X[i])
-        x_new.append(hist)
-    x_new = np.array(x_new)
-    return x_new
+def load_images_from(path_source, get_images=True, get_image_name=True, show_tqdm=True):
+    images = []
+    if show_tqdm:
+        for image_name in tqdm(os.listdir(path_source), "Load images from: " + path_source):
+            image = cv.imread(os.path.join(path_source, image_name))
+            if image is not None:
+                if get_images and get_image_name:
+                    images.append((image, image_name))
+                elif get_images:
+                    images.append(image)
+                elif get_image_name:
+                    images.append(image_name)
+                else:
+                    raise
+        return images
+    else:
+        for image_name in os.listdir(path_source):
+            image = cv.imread(os.path.join(path_source, image_name))
+            if image is not None:
+                if get_images and get_image_name:
+                    images.append((image, image_name))
+                elif get_images:
+                    images.append(image)
+                elif get_image_name:
+                    images.append(image_name)
+                else:
+                    raise
+        return images
 
 
 # LBP
@@ -44,15 +62,6 @@ def extraction_feature_LBP(X, kind_of_feature):
         hist, _ = lbp.describe(X[i])
         x_new.append(hist)
     x_new = np.array(x_new)
-    return x_new
-
-
-def extraction_feature_PCA(X, kind_of_feature):
-    nsamples, nx, ny = X.shape
-    X = X.reshape((nsamples, nx * ny))
-    n_components = 40
-    pca = PCA(n_components=n_components).fit(X)
-    x_new = pca.transform(X)
     return x_new
 
 

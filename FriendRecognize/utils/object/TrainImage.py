@@ -5,6 +5,4 @@ class TrainImage:
         self.path = folder + '/' + file_name
 
     def is_equal(self, file_name):
-        return self.name == file_name.rpartition('.')[0] \
-               and \
-               self.ext == file_name.rpartition('.')[-1]
+        return self.name == file_name.rpartition('.')[0] and self.ext == file_name.rpartition('.')[-1]

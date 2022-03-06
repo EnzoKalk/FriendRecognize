@@ -20,7 +20,8 @@ so that for each friend there are a couple of folders:
 |       |-- noNoemi
 ```
 
-P.S. 
+<b>P.S.</b>
+
 The class '1_ExtractAndAlignFaces.py' it is usefull to
 extract faces from "data/detectedFaces/source/"
 in "data/detectedFaces/extracted_and_aligned_faces/".

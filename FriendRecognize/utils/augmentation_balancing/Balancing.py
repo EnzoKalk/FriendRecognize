@@ -19,7 +19,7 @@ def removing(path, remaining):
         images.remove(image_name)
 
 
-def balance(paths):
+def balancing(paths):
     for index in range(len(paths)):
         if index % 2 == 0:
             # Init parameters

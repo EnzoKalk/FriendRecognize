@@ -9,7 +9,7 @@ from tqdm import tqdm
 from FriendRecognize.utils.Filtering import preprocessing
 from FriendRecognize.utils.UsefulMethods import ImageType, Labeler, Friend, extraction_feature_LBP
 from FriendRecognize.utils.object.TrainImage import TrainImage
-from FriendRecognize.utils.trainModelAndClassifier.Classifier import Classifier, print_metrics
+from FriendRecognize.utils.training_model.Classifier import Classifier, print_metrics
 
 
 def get_model(config, feature):
@@ -125,7 +125,7 @@ def training(X_train, y_train, X_val, y_val, fitted_model_path, metrics=True):
     return y_pred
 
 
-def train(config, friends, detector, predictor, train_ratio=0.7):
+def train_model(config, friends, detector, predictor, train_ratio=0.7):
     for friend in friends:
         # Init parameters
         images_with_friend = get_image_with_friend(config, friend)

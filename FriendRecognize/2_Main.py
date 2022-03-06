@@ -1,9 +1,9 @@
 import dlib
 import yaml
 
-from FriendRecognize.utils.augmentationAndBalancing.Augmentation import augment
-from FriendRecognize.utils.augmentationAndBalancing.Balancing import balance
-from FriendRecognize.utils.trainModelAndClassifier.TrainModel import train
+from FriendRecognize.utils.augmentation_balancing.Augmentation import augmentation
+from FriendRecognize.utils.augmentation_balancing.Balancing import balancing
+from FriendRecognize.utils.training_model.TrainModel import train_model
 
 
 def get_friends(config):
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         for friend in friends:
             paths.append(get_with_feature(config, friend))
             paths.append(get_without_feature(config, friend))
-        augment(paths)
+        augmentation(paths)
 
     if perform_balancing:
         print("\nBalancing...")
@@ -74,12 +74,12 @@ if __name__ == '__main__':
         for friend in friends:
             paths.append(get_with_feature(config, friend))
             paths.append(get_without_feature(config, friend))
-        balance(paths)
+        balancing(paths)
 
     if perform_training:
         print("\nTraining...")
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor(get_predictor_path(config))
-        train(config, friends, detector, predictor)
+        train_model(config, friends, detector, predictor)
 
     exit(0)

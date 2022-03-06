@@ -65,7 +65,7 @@ def further_augmentation(path, remaining):
         cv.imwrite(os.path.join(path, str(remaining) + "_" + image_name), image)
 
 
-def augment(paths):
+def augmentation(paths):
     # Init prameters
     max_number_of_images = 0
 

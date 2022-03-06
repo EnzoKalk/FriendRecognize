@@ -5,7 +5,7 @@ import yaml
 
 from FriendRecognize.utils.Filtering import preprocessing
 from FriendRecognize.utils.UsefulMethods import extraction_feature_LBP
-from utils.trainModelAndClassifier.Classifier import Classifier
+from utils.training_model.Classifier import Classifier
 
 
 def get_model(config, feature):

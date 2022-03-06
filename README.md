@@ -23,8 +23,8 @@ so that for each friend there are a couple of folders:
 <b>P.S.</b>
 
 The class '1_ExtractAndAlignFaces.py' it is usefull to
-extract faces from "data/detectedFaces/source/"
-in "data/detectedFaces/extracted_and_aligned_faces/".
+extract faces from "data/detectedFaces/source"
+in "data/detectedFaces/extracted_and_aligned_faces".
 Anyway, each face extracted must be moved into
 the specific folder in "data/trainingSet"
 
@@ -75,7 +75,7 @@ To start the recognition:
 python 3_CameraRecognizer.py
 ```
 
-## License+
+## License
 This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike
 4.0 International License. To view a copy of this license, 
 visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, 

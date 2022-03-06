@@ -1,9 +1,13 @@
+import copy
 import os
 import random
 
+import cv2 as cv
+import numpy as np
 from tqdm import tqdm
 
-from FriendRecognize.utils.UsefulMethods import ImageType, Labeler, extract_features_for_training, Friend
+from FriendRecognize.utils.Filtering import preprocessing
+from FriendRecognize.utils.UsefulMethods import ImageType, Labeler, Friend, extraction_feature_LBP
 from FriendRecognize.utils.object.TrainImage import TrainImage
 from FriendRecognize.utils.trainModelAndClassifier.Classifier import Classifier, print_metrics
 
@@ -26,6 +30,46 @@ def get_image_without_friend(config, feature):
 
 def generate_empty_dataset():
     return {'train': {0: [], 1: []}, 'val': {0: [], 1: []}}
+
+
+def compute_raw_feature_for_training(X_train, y_train, X_val, y_val, friend):
+    X_train = extraction_feature_LBP(X_train,
+                                     "Extract feature: trainingSet-set of " + str(friend))
+    X_val = extraction_feature_LBP(X_val,
+                                   "Extract feature: validation-set of " + str(friend))
+    return X_train, y_train, X_val, y_val
+
+
+def load_raw_feature_for_training(set_files, labeler, detector, predictor, friend):
+    X = []
+    y = []
+    images = []
+    for id in tqdm(set_files, desc="Loaded identities (" + str(friend) + ")"):
+        for file in set_files[id]:
+            images.append(cv.imread(file.path))
+            y.append(labeler.encode(id))
+    for img in tqdm(images, desc="Pre-processing " + str(friend)):
+        image_to_filter = copy.deepcopy(img)
+        image = preprocessing(image_to_filter, detector, predictor)
+        if image is not None:
+            X.append(image)
+        else:
+            del y[y[len(X)]]
+    return np.array(X), np.array(y)
+
+
+def extract_features_for_training(dataset, labeler, detector, predictor, friend):
+    X = {}
+    y = {}
+    for dataset_type in ['train', 'val']:
+        print(f"\n ---> Pre-processing {dataset_type} set <--- ")
+        X[dataset_type], y[dataset_type] = load_raw_feature_for_training(dataset[dataset_type],
+                                                                         labeler,
+                                                                         detector,
+                                                                         predictor,
+                                                                         friend)
+    print("\n ---> Extract feature <--- ")
+    return compute_raw_feature_for_training(X['train'], y['train'], X['val'], y['val'], friend)
 
 
 def generation_datasets(images_with_friend, images_without_friend, train_ratio, friend):

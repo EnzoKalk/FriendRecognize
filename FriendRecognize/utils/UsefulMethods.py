@@ -1,4 +1,3 @@
-import copy
 import os
 import pickle as pk
 from enum import Enum
@@ -7,7 +6,6 @@ import cv2 as cv
 import numpy as np
 from tqdm import tqdm
 
-from FriendRecognize.utils.Filtering import preprocessing
 from FriendRecognize.utils.lbp.LBPFeature import LBP
 
 
@@ -86,43 +84,3 @@ def extraction_feature_LBP(X, kind_of_feature):
         x_new.append(hist)
     x_new = np.array(x_new)
     return x_new
-
-
-def compute_raw_feature_for_training(X_train, y_train, X_val, y_val, kind_of_feature):
-    X_train = extraction_feature_LBP(X_train,
-                                     "Extract feature: trainingSet-set of " + str(kind_of_feature))
-    X_val = extraction_feature_LBP(X_val,
-                                   "Extract feature: validation-set of " + str(kind_of_feature))
-    return X_train, y_train, X_val, y_val
-
-
-def load_raw_feature_for_training(set_files, labeler, detector, predictor, kind_of_feature):
-    X = []
-    y = []
-    images = []
-    for id in tqdm(set_files, desc="Loaded identities (" + str(kind_of_feature) + ")"):
-        for file in set_files[id]:
-            images.append(cv.imread(file.path))
-            y.append(labeler.encode(id))
-    for img in tqdm(images, desc="Pre-processing " + str(kind_of_feature)):
-        image_to_filter = copy.deepcopy(img)
-        image = preprocessing(image_to_filter, detector, predictor)
-        if image is not None:
-            X.append(image)
-        else:
-            del y[y[len(X)]]
-    return np.array(X), np.array(y)
-
-
-def extract_features_for_training(dataset, labeler, detector, predictor, kind_of_feature):
-    X = {}
-    y = {}
-    for dataset_type in ['train', 'val']:
-        print(f"\n ---> Pre-processing {dataset_type} set <--- ")
-        X[dataset_type], y[dataset_type] = load_raw_feature_for_training(dataset[dataset_type],
-                                                                         labeler,
-                                                                         detector,
-                                                                         predictor,
-                                                                         kind_of_feature)
-    print("\n ---> Extract feature <--- ")
-    return compute_raw_feature_for_training(X['train'], y['train'], X['val'], y['val'], kind_of_feature)

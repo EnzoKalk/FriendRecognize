@@ -45,8 +45,7 @@ def extract_features_for_testing(img, detector, predictor):
     prep_img = preprocessing(img, detector, predictor)
     if prep_img is None:
         return []
-    X = []
-    X.append(prep_img)
+    X = [prep_img]
     return compute_feature_for_testing(np.array(X))
 
 

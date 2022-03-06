@@ -18,13 +18,13 @@ def get_model(config, feature):
 
 def get_image_with_friend(config, feature):
     path = config['data']['training'] + config['friends']['with'][feature]
-    img_type = ImageType.FEATURE.value
+    img_type = ImageType.FRIEND.value
     return {'path': path, 'type': img_type}
 
 
 def get_image_without_friend(config, feature):
     path = config['data']['training'] + config['friends']['without'][feature]
-    img_type = ImageType.NO_FEATURE.value
+    img_type = ImageType.NO_FRIEND.value
     return {'path': path, 'type': img_type}
 
 

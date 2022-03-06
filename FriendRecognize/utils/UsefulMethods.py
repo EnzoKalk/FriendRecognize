@@ -18,8 +18,8 @@ class Friend(Enum):
 
 
 class ImageType(Enum):
-    FEATURE = 1
-    NO_FEATURE = 0
+    FRIEND = 1
+    NO_FRIEND = 0
 
 
 class Labeler:

@@ -22,16 +22,13 @@ so that for each friend there are a couple of folders:
 
 <b>P.S.</b>
 
-The class '1_ExtractAndAlignFaces.py' it is usefull to
-extract faces from "data/detectedFaces/source"
-in "data/detectedFaces/extracted_and_aligned_faces".
-Anyway, each face extracted must be moved into
-the specific folder in "data/trainingSet"
+The class '1_ExtractAndAlignFaces.py' it is usefull to extract faces from "data/detectedFaces/source"
+in "data/detectedFaces/extracted_and_aligned_faces". Anyway, each face extracted must be moved into the specific folder
+in "data/trainingSet"
 
 ## Training phase
 
-Before training, make sure that the 
-following value are set in 'config.yml':
+Before training, make sure that the following value are set in 'config.yml':
 
 - friends -> with/without
 - libs -> face_cascade, predictor
@@ -62,8 +59,7 @@ After training, the resulting models are saved in:
 
 ## Recognize phase
 
-Before test, make sure that the 
-following value are set in 'config.yml':
+Before test, make sure that the following value are set in 'config.yml':
 
 - friends -> with/without
 - libs -> face_cascade, predictor
@@ -76,11 +72,12 @@ python 3_CameraRecognizer.py
 ```
 
 ## License
-This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike
-4.0 International License. To view a copy of this license, 
-visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, 
-PO Box 1866, Mountain View, CA 94042, USA.
+
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view
+a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, PO
+Box 1866, Mountain View, CA 94042, USA.
 
 # Example
+
 ![photo_2022-03-03_15-59-04](https://user-images.githubusercontent.com/45711698/156907059-ee4abca7-11ba-4744-ad3e-7a1b6c09f09d.jpg)
 

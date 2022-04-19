@@ -1,8 +1,7 @@
-import os
-import shutil
-
 import cv2 as cv
 import dlib
+import os
+import shutil
 import yaml
 from tqdm import tqdm
 

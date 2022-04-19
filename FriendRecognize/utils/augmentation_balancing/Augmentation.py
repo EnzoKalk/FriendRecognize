@@ -1,8 +1,7 @@
-import os
-import random
-
 import cv2 as cv
 import numpy as np
+import os
+import random
 from tqdm import tqdm
 
 from FriendRecognize.utils.UsefulMethods import load_images_from

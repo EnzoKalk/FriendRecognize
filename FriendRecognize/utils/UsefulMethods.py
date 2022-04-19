@@ -1,9 +1,8 @@
+import cv2 as cv
+import numpy as np
 import os
 import pickle as pk
 from enum import Enum
-
-import cv2 as cv
-import numpy as np
 from tqdm import tqdm
 
 from FriendRecognize.utils.lbp.LBPFeature import LBP

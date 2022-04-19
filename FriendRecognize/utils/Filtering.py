@@ -1,7 +1,6 @@
 import copy
-import math
-
 import cv2 as cv
+import math
 import numpy as np
 
 
